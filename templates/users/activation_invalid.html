@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Activation Invalid{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-body text-center">
+                    <h2 class="card-title text-danger">Activation Failed</h2>
+                    <p class="card-text">
+                        We're sorry, but the activation link you clicked is invalid or has expired.
+                    </p>
+                    <p class="card-text">
+                        This could be because:
+                    </p>
+                    <ul class="list-unstyled">
+                        <li>The link has already been used</li>
+                        <li>The link has expired (links are valid for 24 hours)</li>
+                        <li>The link was incorrectly copied or modified</li>
+                    </ul>
+                    <p class="card-text mt-4">
+                        If you still need to activate your account, please try the following:
+                    </p>
+                    <ol class="text-left">
+                        <li>Check your email inbox for the most recent activation email</li>
+                        <li>If you can't find it, check your spam folder</li>
+                        <li>If you still can't find it, you may need to sign up again</li>
+                    </ol>
+                    <div class="mt-4">
+                        <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up Again</a>
+                        <a href="{% url 'home' %}" class="btn btn-secondary ml-2">Return to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
