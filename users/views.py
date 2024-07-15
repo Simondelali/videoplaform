@@ -10,6 +10,10 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from .forms import CustomUserCreationForm
 from .models import CustomUser
 from .tokens import account_activation_token
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 @ensure_csrf_cookie
 def signup(request):
@@ -62,3 +66,26 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been successfully logged out.")
     return redirect('home')
+
+def password_reset(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        associated_users = User.objects.filter(email=email)
+        if associated_users.exists():
+            for user in associated_users:
+                current_site = get_current_site(request)
+                mail_subject = 'Reset your password.'
+                message = render_to_string('users/password_reset_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                    'protocol': 'https' if request.is_secure() else 'http',
+                })
+                email = EmailMessage(mail_subject, message, to=[user.email])
+                email.send()
+            messages.success(request, 'Password reset email has been sent. Please check your inbox.')
+            return redirect('password_reset_done')
+        else:
+            messages.error(request, 'No user found with that email address.')
+    return render(request, 'users/password_reset_form.html')
