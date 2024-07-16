@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if video %}{{ video.title }}{% else %}No Videos Available{% endif %}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    {% if video %}
+        <h1 class="mt-4 mb-4">{{ video.title }}</h1>
+        
+        <div class="embed-responsive embed-responsive-16by9">
+            <video class="embed-responsive-item" controls>
+                <source src="{{ video.file.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <p class="mt-3">{{ video.description }}</p>
+        
+        <div class="mt-4">
+            {% if has_previous %}
+                <a href="{% url 'video_page' %}?index={{ previous_index }}" class="btn btn-primary">Previous</a>
+            {% endif %}
+            
+            {% if has_next %}
+                <a href="{% url 'video_page' %}?index={{ next_index }}" class="btn btn-primary float-right">Next</a>
+            {% endif %}
+        </div>
+        
+        <p class="mt-3 text-center">Video {{ current_index|add:1 }} of {{ total_videos }}</p>
+        
+        <button class="btn btn-secondary mt-3" onclick="shareVideo()">Share</button>
+    {% else %}
+        <h1 class="mt-4 mb-4">No Videos Available</h1>
+        <p>There are currently no videos uploaded to the platform.</p>
+    {% endif %}
+</div>
+
+<script>
+function shareVideo() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+        alert('Link copied to clipboard!');
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+</script>
+{% endblock content %}
