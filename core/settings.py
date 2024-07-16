@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     #Apps
     'users',
+    'videos',
 
     #Third party apps
     'crispy_forms',
