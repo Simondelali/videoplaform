@@ -1,47 +1,141 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}{% if video %}{{ video.title }}{% else %}No Videos Available{% endif %}{% endblock title %}
+{% block title %}{{ video.title }} | Video Platform{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        background-color: #000;
+    }
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .share-btn {
+        position: relative;
+    }
+    .share-tooltip {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -75px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .share-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+    .share-btn:hover .share-tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+    .video-info {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .suggested-video-card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock extra_css %}
 
 {% block content %}
-<div class="container">
-    {% if video %}
-        <h1 class="mt-4 mb-4">{{ video.title }}</h1>
-        
-        <div class="embed-responsive embed-responsive-16by9">
-            <video class="embed-responsive-item" controls>
-                <source src="{{ video.file.url }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-        
-        <p class="mt-3">{{ video.description }}</p>
-        
-        <div class="mt-4">
-            {% if has_previous %}
-                <a href="{% url 'video_page' %}?index={{ previous_index }}" class="btn btn-primary">Previous</a>
-            {% endif %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="video-container mb-3">
+                <video controls autoplay>
+                    <source src="{{ video.file.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-info">
+                <h1 class="mb-3">{{ video.title }}</h1>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="mb-0"><i class="far fa-eye"></i> {{ video.views }} views</p>
+                    <p class="mb-0"><i class="far fa-clock"></i> {{ video.uploaded_at|date:"F d, Y" }}</p>
+                    <button class="btn btn-outline-primary share-btn" onclick="shareVideo()">
+                        <i class="fas fa-share-alt"></i> Share
+                        <span class="share-tooltip">Link copied!</span>
+                    </button>
+                </div>
+                <hr>
+                <h5>Description</h5>
+                <p>{{ video.description }}</p>
+                <p class="text-muted">Uploaded by: {{ video.uploader.username }}</p>
+            </div>
             
-            {% if has_next %}
-                <a href="{% url 'video_page' %}?index={{ next_index }}" class="btn btn-primary float-right">Next</a>
-            {% endif %}
+            <!-- Comment section (placeholder) -->
+            <div class="mt-4">
+                <h4>Comments</h4>
+                <p class="text-muted">Comments are coming soon!</p>
+            </div>
         </div>
-        
-        <p class="mt-3 text-center">Video {{ current_index|add:1 }} of {{ total_videos }}</p>
-        
-        <button class="btn btn-secondary mt-3" onclick="shareVideo()">Share</button>
-    {% else %}
-        <h1 class="mt-4 mb-4">No Videos Available</h1>
-        <p>There are currently no videos uploaded to the platform.</p>
-    {% endif %}
+        <div class="col-lg-4">
+            <h4 class="mb-3">Suggested Videos</h4>
+            {% for suggested_video in suggested_videos %}
+                <div class="card mb-3 suggested-video-card">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="{% static 'videos/thumbnail.jpg' %}" class="card-img" alt="{{ suggested_video.title }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'video_page' suggested_video.slug %}" class="text-dark">{{ suggested_video.title }}</a></h5>
+                                <p class="card-text"><small class="text-muted">{{ suggested_video.views }} views • {{ suggested_video.uploaded_at|date:"F d, Y" }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 <script>
 function shareVideo() {
     navigator.clipboard.writeText(window.location.href).then(function() {
-        alert('Link copied to clipboard!');
+        var tooltip = document.querySelector('.share-tooltip');
+        tooltip.style.visibility = 'visible';
+        tooltip.style.opacity = '1';
+        setTimeout(function() {
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '0';
+        }, 2000);
     }, function(err) {
         console.error('Could not copy text: ', err);
     });
 }
+
+// Increment view count (this should ideally be done server-side)
+
 </script>
 {% endblock content %}

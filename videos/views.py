@@ -1,28 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Video
 
 @login_required
-def video_page(request):
-    videos = list(Video.objects.all().order_by('id'))
-    total_videos = len(videos)
-    
-    current_index = int(request.GET.get('index', 0))
-    
-    if current_index < 0:
-        current_index = 0
-    elif current_index >= total_videos:
-        current_index = total_videos - 1
-    
-    current_video = videos[current_index] if videos else None
-    
+def default_video_page(request):
+    first_video = Video.objects.order_by('id').first()
+    if first_video:
+        return redirect('video_page', slug=first_video.slug)
+    else:
+        return render(request, 'videos/no_videos.html')
+
+@login_required
+def video_page(request, slug):
+    video = get_object_or_404(Video, slug=slug)
+    videos = Video.objects.exclude(id=video.id).order_by('?')[:5]
+
+    all_videos = list(Video.objects.order_by('id'))
+    current_index = all_videos.index(video)
+    next_video = all_videos[(current_index + 1) % len(all_videos)]
+    prev_video = all_videos[(current_index - 1) % len(all_videos)]
+
     context = {
-        'video': current_video,
-        'has_previous': current_index > 0,
-        'has_next': current_index < total_videos - 1,
-        'previous_index': current_index - 1,
-        'next_index': current_index + 1,
-        'current_index': current_index,
-        'total_videos': total_videos,
+        'video': video,
+        'suggested_videos': videos,
+        'next_video': next_video,
+        'prev_video': prev_video,
     }
     return render(request, 'videos/video_page.html', context)
