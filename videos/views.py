@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Video
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 def default_video_page(request):
@@ -27,3 +30,11 @@ def video_page(request, slug):
         'prev_video': prev_video,
     }
     return render(request, 'videos/video_page.html', context)
+
+@csrf_exempt
+@require_POST
+def increment_view(request, slug):
+    video = get_object_or_404(Video, slug=slug)
+    video.views += 1
+    video.save()
+    return JsonResponse({'status': 'ok'})

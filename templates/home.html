@@ -13,7 +13,7 @@
             {% if user.is_authenticated %}
                 <p>Hello, {{ user.email }}! We're glad you're here.</p>
                 <div class="mt-4">
-                    <a href="{% url 'video_page' %}" class="btn btn-primary mr-2">Explore Contents</a>
+                    <a href="{% url 'default_video_page' %}" class="btn btn-primary mr-2">Explore Contents</a>
                 </div>
             {% else %}
                 <p>Join our community to access exclusive video content.</p>
