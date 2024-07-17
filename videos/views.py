@@ -20,14 +20,27 @@ def video_page(request, slug):
 
     all_videos = list(Video.objects.order_by('id'))
     current_index = all_videos.index(video)
-    next_video = all_videos[(current_index + 1) % len(all_videos)]
-    prev_video = all_videos[(current_index - 1) % len(all_videos)]
+
+    next_video = None
+    prev_video = None
+    has_next = False
+    has_prev = False
+
+    if current_index < len(all_videos) - 1:
+        next_video = all_videos[current_index + 1]
+        has_next = True
+
+    if current_index > 0:
+        prev_video = all_videos[current_index - 1]
+        has_prev = True
 
     context = {
         'video': video,
         'suggested_videos': videos,
         'next_video': next_video,
         'prev_video': prev_video,
+        'has_next': has_next,
+        'has_prev': has_prev,
     }
     return render(request, 'videos/video_page.html', context)
 

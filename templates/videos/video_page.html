@@ -78,12 +78,20 @@
                 </video>
             </div>
             <div class="d-flex justify-content-between mb-3">
-                <a href="{% url 'video_page' prev_video.slug %}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Previous
-                </a>
-                <a href="{% url 'video_page' next_video.slug %}" class="btn btn-secondary">
-                    Next <i class="fas fa-arrow-right"></i>
-                </a>
+                <div>
+                    {% if has_prev %}
+                    <a href="{% url 'video_page' prev_video.slug %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </a>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if has_next %}
+                    <a href="{% url 'video_page' next_video.slug %}" class="btn btn-secondary">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </a>
+                    {% endif %}
+                </div>
             </div>
             <div class="video-info">
                 <h1 class="mb-3">{{ video.title }}</h1>
