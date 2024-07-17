@@ -3,5 +3,5 @@ from .models import Video
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'uploaded_at', 'uploader')
+    list_display = ('title', 'uploaded_at')
     search_fields = ('title', 'description')

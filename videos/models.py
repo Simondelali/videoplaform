@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Video(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, max_length=150)
+    slug = models.SlugField(unique=True, max_length=150, null=True)
     description = models.TextField()
     file = models.FileField(upload_to='videos/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
