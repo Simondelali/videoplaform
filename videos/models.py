@@ -25,7 +25,7 @@ class Video(models.Model):
     def process_thumbnail(self):
         img = Image.open(self.thumbnail.path)
         img = img.convert('RGB')
-        img.thumbnail((300, 300), Image.ANTIALIAS)
+        img.thumbnail((300, 300))
         img.save(self.thumbnail.path)
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Video(models.Model):
     
     def thumbnail_tag(self):
         if self.thumbnail:
-            return format_html('<img src="{}" style="max-width: 100px; max-height: 100px;" />', self.thumbnail.url)
+            return format_html('<img src="{}" style="max-width: 300px; max-height: 300px;" />', self.thumbnail.url)
         else:
             return 'No thumbnail found'
         
