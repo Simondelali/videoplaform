@@ -1,6 +1,6 @@
 # 🎥 Video Platform Project - Stream Hive
 
-![Project Logo](static/logo.png)
+Business Logo:  ![Project Logo](static/logo.png)
 
 ## 📚 Table of Contents
 1. [Introduction](#-introduction)
