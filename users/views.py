@@ -12,6 +12,12 @@ from .models import CustomUser
 from .tokens import account_activation_token
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
+from django.urls import reverse
+from trycourier import Courier
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 User = get_user_model()
 
@@ -24,21 +30,37 @@ def signup(request):
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your account.'
-            message = render_to_string('users/acc_active_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-                'protocol':'https' if request.is_secure() else 'http',
-            })
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                mail_subject, message, to=[to_email]
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = account_activation_token.make_token(user)
+            
+            # Construct the activation link
+            activation_link = request.build_absolute_uri(
+                reverse('activate', kwargs={'uidb64': uid, 'token': token})
             )
-            email.send()
-            messages.success(request, 'Account created successfully. Please check your email to verify your account.')
-            return render(request, 'users/signup_email_sent.html')
+
+
+            # Initialize Courier client
+            client = Courier(auth_token=os.getenv('auth_token'))
+
+            # Send email using Courier
+            resp = client.send_message(
+                message={
+                    "to": {
+                        "email": form.cleaned_data.get('email'),
+                    },
+                    "template": "7CGAQ95SF0MBA0GTFG4C6P8EYY13",
+                    "data": {
+                        "recipientName": user.email,
+                        "activationLink": activation_link,
+                    },
+                }
+            )
+
+            if resp['requestId']:
+                messages.success(request, 'Account created successfully. Please check your email to verify your account.')
+                return render(request, 'users/signup_email_sent.html')
+            else:
+                messages.error(request, 'There was an error sending the activation email. Please try again.')
         else:
             messages.error(request, 'There was an error with your submission. Please check the form and try again.')
     else:
@@ -74,17 +96,36 @@ def password_reset(request):
         if associated_users.exists():
             for user in associated_users:
                 current_site = get_current_site(request)
-                mail_subject = 'Reset your password.'
-                message = render_to_string('users/password_reset_email.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': default_token_generator.make_token(user),
-                    'protocol': 'https' if request.is_secure() else 'http',
-                })
-                email = EmailMessage(mail_subject, message, to=[user.email])
-                email.send()
-            messages.success(request, 'Password reset email has been sent. Please check your inbox.')
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+                
+                # Construct the password reset link
+                reset_link = request.build_absolute_uri(
+                    reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+                )
+
+                # Initialize Courier client
+                client = Courier(auth_token=os.getenv('auth_token'))
+
+                # Send email using Courier
+                resp = client.send_message(
+                    message={
+                        "to": {
+                            "email": user.email,
+                        },
+                        "template": "Y9Z19C9D774624H0AB1RRG1D3R0W",
+                        "data": {
+                            "recipientName": user.email,
+                            "resetLink": reset_link,
+                        },
+                    }
+                )
+
+                if resp['requestId']:
+                    messages.success(request, 'Password reset email has been sent. Please check your inbox.')
+                else:
+                    messages.error(request, 'There was an error sending the password reset email. Please try again.')
+            
             return redirect('password_reset_done')
         else:
             messages.error(request, 'No user found with that email address.')
