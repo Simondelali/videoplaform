@@ -68,7 +68,7 @@
 {% endblock extra_css %}
 
 {% block content %}
-<div class="container-fluid mt-4">
+<div class="container mt-4">
     <div class="row">
         <div class="col-lg-8">
             <div class="video-container mb-3">
@@ -76,6 +76,22 @@
                     <source src="{{ video.file.url }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    {% if has_prev %}
+                    <a href="{% url 'video_page' prev_video.slug %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </a>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if has_next %}
+                    <a href="{% url 'video_page' next_video.slug %}" class="btn btn-secondary">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </a>
+                    {% endif %}
+                </div>
             </div>
             <div class="video-info">
                 <h1 class="mb-3">{{ video.title }}</h1>
@@ -88,9 +104,9 @@
                     </button>
                 </div>
                 <hr>
-                <h5>Description</h5>
+                <!-- <h5>Description</h5> -->
                 <p>{{ video.description }}</p>
-                <p class="text-muted">Uploaded by: {{ video.uploader.username }}</p>
+                <!-- <p class="text-muted">Uploaded by: {{ video.uploader.username }}</p> -->
             </div>
             
             <!-- Comment section (placeholder) -->
@@ -104,8 +120,8 @@
             {% for suggested_video in suggested_videos %}
                 <div class="card mb-3 suggested-video-card">
                     <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'videos/thumbnail.jpg' %}" class="card-img" alt="{{ suggested_video.title }}">
+                        <div class="col-md-4 d-flex">
+                            <img src="{{ suggested_video.thumbnail.url }}" class="card-img" alt="{{ suggested_video.title }}">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
@@ -135,7 +151,6 @@ function shareVideo() {
     });
 }
 
-// Increment view count (this should ideally be done server-side)
-
+fetch('/video/increment-view/{{ video.slug }}/', {method: 'POST'});
 </script>
 {% endblock content %}
