@@ -64,6 +64,25 @@
         transition: transform 0.3s ease;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
+    .comment, .reply {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .comment-header, .reply-header {
+        margin-bottom: 10px;
+    }
+
+    .replies {
+        border-left: 2px solid #dee2e6;
+        padding-left: 15px;
+    }
+
+    .reply {
+        background-color: #ffffff;
+    }
 </style>
 {% endblock extra_css %}
 
@@ -110,9 +129,67 @@
             </div>
             
             <!-- Comment section (placeholder) -->
-            <div class="mt-4">
-                <h4>Comments</h4>
-                <p class="text-muted">Comments are coming soon!</p>
+            <!-- <div class="mt-4">
+                <h4>Comments</h4> -->
+                <!-- Update the comment and reply sections in your template -->
+                <div class="mt-4" id="comments-section">
+                    <h4>Comments</h4>
+                    <form action="{% url 'post_comment' video.slug %}" method="post" class="mb-3">
+                        {% csrf_token %}
+                        <textarea class="form-control" name="content" rows="3" placeholder="Write a comment..."></textarea>
+                        <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                    </form>
+                    <div id="comments-list">
+                        {% for comment in comments %}
+                        <div class="comment mb-3" id="comment-{{ comment.id }}">
+                            <div class="comment-header d-flex justify-content-between">
+                                <strong>{{ comment.user.email }}</strong>
+                                <div>
+                                    <small class="text-muted relative-time" data-timestamp="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"F d, Y H:i" }}</small>
+                                    {% if user == comment.user %}
+                                    <form action="{% url 'delete_comment' video.slug comment.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-danger ml-2" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p>{{ comment.content }}</p>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="toggleReplyForm('{{ comment.id }}')">Reply</button>
+                            <div class="reply-form mt-2" id="reply-form-{{ comment.id }}" style="display: none;">
+                                <form action="{% url 'post_reply' video.slug comment.id %}" method="post">
+                                    {% csrf_token %}
+                                    <textarea class="form-control" name="content" rows="2" placeholder="Write a reply..."></textarea>
+                                    <button type="submit" class="btn btn-sm btn-primary mt-2">Post Reply</button>
+                                </form>
+                            </div>
+                            <div class="replies ml-4 mt-2">
+                                {% for reply in comment.replies.all %}
+                                <div class="reply mb-2" id="reply-{{ reply.id }}">
+                                    <div class="reply-header d-flex justify-content-between">
+                                        <strong>{{ reply.user.email }}</strong>
+                                        <div>
+                                            <small class="text-muted relative-time" data-timestamp="{{ reply.created_at|date:'c' }}">{{ reply.created_at|date:"F d, Y H:i" }}</small>
+                                            {% if user == reply.user %}
+                                            <form action="{% url 'delete_comment' video.slug reply.id %}" method="post" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-danger ml-2" onclick="return confirm('Are you sure you want to delete this reply?')">Delete</button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <p>{{ reply.content }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            <!-- </div> -->
+            <div class="col-lg-4">
             </div>
         </div>
         <div class="col-lg-4">
@@ -152,5 +229,34 @@ function shareVideo() {
 }
 
 fetch('/video/increment-view/{{ video.slug }}/', {method: 'POST'});
+
+function toggleReplyForm(commentId) {
+    const replyForm = document.getElementById(`reply-form-${commentId}`);
+    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+}
+
+function updateRelativeTimes() {
+    const times = document.getElementsByClassName('relative-time');
+    for (let time of times) {
+        const timestamp = new Date(time.dataset.timestamp);
+        time.textContent = getRelativeTime(timestamp);
+    }
+}
+
+function getRelativeTime(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)} months ago`;
+    return `${Math.floor(diffInSeconds / 31536000)} years ago`;
+}
+
+// Call this function when the page loads and periodically
+updateRelativeTimes();
+setInterval(updateRelativeTimes, 60000); // Update every minute 
 </script>
 {% endblock content %}

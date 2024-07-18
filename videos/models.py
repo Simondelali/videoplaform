@@ -36,3 +36,16 @@ class Video(models.Model):
             return format_html('<img src="{}" style="max-width: 100px; max-height: 100px;" />', self.thumbnail.url)
         else:
             return 'No thumbnail found'
+        
+class Comment(models.Model):
+    video = models.ForeignKey('Video', on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Comment by {self.user.email} on {self.video.title}"
