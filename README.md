@@ -1,10 +1,10 @@
-# 🎥 Stream Hive
+# 🎥 Video Platform Project - Stream Hive
 
 ![Project Logo](static/logo.png)
 
 ## 📚 Table of Contents
-1. [Introduction](#introduction)
-2. [Features](#features)
+1. [Introduction](#-introduction)
+2. [Features](#-features)
 3. [Technologies Used](#technologies-used)
 4. [Setup and Installation](#setup-and-installation)
 5. [Usage](#usage)
@@ -15,7 +15,7 @@
 
 ## 🌟 Introduction
 
-Django Video Platform is a robust web application that allows users to upload, view, and manage video content. Built with Django, this platform provides a user-friendly interface for video sharing and consumption, along with powerful admin tools for content management.
+Stream Hive is a robust web application that allows users to get access to exclusive video contents. Built with Django, this platform provides a user-friendly interface for video sharing and navigation, along with a powerful admin tools for content management.
 
 ## ✨ Features
 
@@ -30,20 +30,23 @@ Django Video Platform is a robust web application that allows users to upload, v
 
 ## 🛠️ Technologies Used
 
-- 🐍 Django 4.x
-- 🐍 Python 3.x
+- 🐍 Django 5.0.7
+- 🐍 Python 3.12.0
 - 🐘 PostgreSQL
 - 🌐 HTML5, CSS3, JavaScript
-- 🎨 Bootstrap 5
-- 🚀 Django Rest Framework (for API)
-- 🎞️ FFmpeg (for video processing)
+- 🎨 Bootstrap 4
+- 🚀 MS Azure
 
 ## 🚀 Setup and Installation
 
 1. Clone the repository:
+```bash
 git clone https://github.com/simondelali/videoplatform.git
 cd videoplatform
+```
 
 2. Create a virtual environment and activate it:
+```
 python -m venv venv
 source venv/bin/activate  # On Windows, use venv\Scripts\activate
+```
