@@ -120,8 +120,8 @@
             {% for suggested_video in suggested_videos %}
                 <div class="card mb-3 suggested-video-card">
                     <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'videos/thumbnail.jpg' %}" class="card-img" alt="{{ suggested_video.title }}">
+                        <div class="col-md-4 d-flex">
+                            <img src="{{ suggested_video.thumbnail.url }}" class="card-img" alt="{{ suggested_video.title }}">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
