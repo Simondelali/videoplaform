@@ -20,7 +20,7 @@
 Stream Hive is a robust web application that allows users to get access to exclusive video contents. Built with Django, this platform provides a user-friendly interface for video sharing and navigation, along with a powerful admin tools for content management.
 
 ## 📱 Demo
-- Deployed link: [https://streamhive.azurewebsites.net/](https://streamhive.azurewebsites.net/)
+- Deployed link: [https://streamhive.azurewebsites.net](https://streamhive.azurewebsites.net)
 
 ## ✨ Features
 
