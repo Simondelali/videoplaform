@@ -6,9 +6,10 @@
 ## 📚 Table of Contents
 1. [Introduction](#-introduction)
 2. [Features](#-features)
-3. [Technologies Used](#technologies-used)
-4. [Setup and Installation](#setup-and-installation)
-5. [Usage](#usage)
+3. [ER Diagram](#)
+4. [Technologies Used](#technologies-used)
+5. [Setup and Installation](#setup-and-installation)
+6. [Usage](#usage)
 7. [Contributing](#contributing)
 8. [License](#license)
 9. [Contact](#contact)
@@ -27,6 +28,9 @@ Stream Hive is a robust web application that allows users to get access to exclu
 - 🛠️ Admin dashboard for content moderation
 - 📱 Responsive design for mobile and desktop
 - 🔍 Video share functionality
+
+## 📈 ER Diagram
+[!ER Diagram](static/erd.png)
 
 ## 🛠️ Technologies Used
 
@@ -88,7 +92,7 @@ For admin:
 
 ## 🤝 Contributing
 
-We welcome contributions to the Django Video Platform! Please follow these steps to contribute:
+We welcome contributions to the Share Hive Platform! Please follow these steps to contribute:
 
 1. 🍴 Fork the repository.
 2. 🌿 Create a new branch: `git checkout -b feature-branch-name`.
@@ -104,6 +108,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 📞 Contact
 
-Project Link: [https://github.com/yourusername/django-video-platform](https://github.com/yourusername/django-video-platform)
+Project Link: [https://github.com/simondelali/videoplaform](https://github.com/simondelali/videoplaform)
 
-If you have any questions, feel free to contact us at: your.email@example.com
+If you have any questions, feel free to contact me at: atiegardelali@gmail.com
