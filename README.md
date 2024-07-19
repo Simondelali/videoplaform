@@ -34,7 +34,7 @@ Stream Hive is a robust web application that allows users to get access to exclu
 - 🔍 Video share functionality
 
 ## 📈 ER Diagram
-[!ER Diagram](static/erd.png)
+![ER Diagram](static/erd.png)
 
 ## 🛠️ Technologies Used
 
