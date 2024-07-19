@@ -40,7 +40,7 @@ def signup(request):
 
 
             # Initialize Courier client
-            client = Courier(auth_token=os.getenv('auth_token'))
+            client = Courier(auth_token=os.environ['auth_token'])
 
             # Send email using Courier
             resp = client.send_message(
@@ -105,7 +105,7 @@ def password_reset(request):
                 )
 
                 # Initialize Courier client
-                client = Courier(auth_token=os.getenv('auth_token'))
+                client = Courier(auth_token=os.environ['auth_token'])
 
                 # Send email using Courier
                 resp = client.send_message(
