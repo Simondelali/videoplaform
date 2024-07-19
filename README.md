@@ -1,7 +1,7 @@
 # 🎥 Video Platform Project - Stream Hive
 
 ### Business Logo:  
-![Project Logo](static/logo.png)
+![Project Logo](static/logo1.png)
 
 ## 📚 Table of Contents
 1. [Introduction](#-introduction)
@@ -9,7 +9,6 @@
 3. [Technologies Used](#technologies-used)
 4. [Setup and Installation](#setup-and-installation)
 5. [Usage](#usage)
-6. [API Documentation](#api-documentation)
 7. [Contributing](#contributing)
 8. [License](#license)
 9. [Contact](#contact)
@@ -21,13 +20,13 @@ Stream Hive is a robust web application that allows users to get access to exclu
 ## ✨ Features
 
 - 🔐 User authentication and authorization
-- 📤 Video upload and management
-- 🎬 Custom video player
+- 🛠️ Email verification and password reset
+- 📤 Video upload and management by admin
+- 🎬 Video player with basic controls
 - 💬 Comment system with nested replies
 - 🛠️ Admin dashboard for content moderation
 - 📱 Responsive design for mobile and desktop
-- 🔍 Video search functionality
-- 👤 User profiles
+- 🔍 Video share functionality
 
 ## 🛠️ Technologies Used
 
@@ -52,3 +51,59 @@ python -m venv venv
 source venv/bin/activate  # On Windows, use venv\Scripts\activate
 ```
 
+3. Install the required dependencies:
+```
+pip install -r requirements.txt
+```
+
+4. Set up the PostgreSQL database and update the `DATABASES` configuration in `settings.py`.
+
+5. Apply migrations:
+```
+python manage.py migrate
+```
+6. Create a superuser:
+```
+python manage.py createsuperuser
+```
+7. Run the development server:
+```
+python manage.py runserver
+```
+8. Visit `http://localhost:8000` in your browser.
+
+## 📖 Usage
+
+1. 📝 Register a new account or log in with existing credentials.
+2. 🔐 Activate your account via email confirmation.
+3. 🏠 Browse videos on the video page.
+4. 🎥 Watch videos and leave comments.
+5. 📱 Share videos
+
+For admin:
+1. 🔐 Access the custom admin panel at `http://localhost:8000/customadmin/`
+2. 📤 Upload videos through the dashboard.
+3. 👤 Manage your uploaded content through the dashboard.
+
+
+## 🤝 Contributing
+
+We welcome contributions to the Django Video Platform! Please follow these steps to contribute:
+
+1. 🍴 Fork the repository.
+2. 🌿 Create a new branch: `git checkout -b feature-branch-name`.
+3. 🔧 Make your changes and commit them: `git commit -m 'Add some feature'`.
+4. 📤 Push to the branch: `git push origin feature-branch-name`.
+5. 🔀 Submit a pull request.
+
+For major changes, please open an issue first to discuss what you would like to change.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 📞 Contact
+
+Project Link: [https://github.com/yourusername/django-video-platform](https://github.com/yourusername/django-video-platform)
+
+If you have any questions, feel free to contact us at: your.email@example.com
