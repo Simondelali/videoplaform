@@ -40,7 +40,7 @@ def signup(request):
 
 
             # Initialize Courier client
-            client = Courier(auth_token=[os.environ['auth_token']])
+            client = Courier(auth_token="pk_prod_1BW7KABQ7C4WJNPBEC4HXBNV43JN")
 
             # Send email using Courier
             resp = client.send_message(
