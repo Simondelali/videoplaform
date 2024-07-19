@@ -5,18 +5,22 @@
 
 ## 📚 Table of Contents
 1. [Introduction](#-introduction)
-2. [Features](#-features)
-3. [ER Diagram](#)
-4. [Technologies Used](#technologies-used)
-5. [Setup and Installation](#setup-and-installation)
-6. [Usage](#usage)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Contact](#contact)
+2. [Demo](#-demo)
+3. [Features](#-features)
+4. [ER Diagram](#-er-diagram)
+5. [Technologies Used](#technologies-used)
+6. [Setup and Installation](#setup-and-installation)
+7. [Usage](#usage)
+8. [Contributing](#contributing)
+9. [License](#license)
+10. [Contact](#contact)
 
 ## 🌟 Introduction
 
 Stream Hive is a robust web application that allows users to get access to exclusive video contents. Built with Django, this platform provides a user-friendly interface for video sharing and navigation, along with a powerful admin tools for content management.
+
+## 📱 Demo
+- Deployed link: [https://streamhive.azurewebsites.net/](https://streamhive.azurewebsites.net/)
 
 ## ✨ Features
 
